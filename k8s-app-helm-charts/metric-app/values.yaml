@@ -1,24 +1,22 @@
-namespace : metric-app-dev
-
 replicaCount: 1
 
+namespace: metric-app-dev # Deployment가 배포될 네임스페이스
+
 image:
-  repository: ghcr.io/devopslabs-jcg/metric-app
-  tag: 5a7e3f05c732f5ea2f4db703ca6ff6ffeae394cb
-  pullPolicy: IfNotPresent
+  repository: ghcr.io/jangk34/metric-app # 실제 GHCR 이미지 경로
+  tag: latest # 실제 이미지 태그
+  pullPolicy: IfNotPresent # 이미지 풀 정책
 
-service:
-  type: ClusterIP
-  port: 80
-
+# resources (컨테이너 리소스 요청/제한)
 resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
-# === GHCR Image Pull Secret 관련 설정 ===
-# Sealed Secrets를 사용할 경우, 여기에 암호화된 .dockerconfigjson 값을 넣습니다.
-# 이 값은 'kubeseal' 명령어로 생성됩니다.
-imagePullSecret:
-  enabled: true # Secret 생성을 활성화/비활성화
-  name: ghcr-pull-secret # 생성될 Secret의 이름
-  # 여기에 실제 암호화된 .dockerconfigjson 문자열이 들어갑니다.
-  # 예시: eyJhdXRocyI6eyJnaGNyLmlvIjp7ImF1dGgiOiJ... (매우 긴 문자열)
-  sealedDockerConfigJson: "INSERT_YOUR_SEALED_DOCKER_CONFIG_JSON_HERE"
+# imagePullSecrets 정의 (여기에 ghcr-pull-secret 추가)
+# 이 리스트는 Deployment 템플릿의 {{- if .Values.imagePullSecrets }} 블록에 사용
+imagePullSecrets:
+  - name: ghcr-pull-secret #SealedSecret의 이름

@@ -15,6 +15,10 @@ spec:
       labels:
         {{- include "metric-app.selectorLabels" . | nindent 8 }}
     spec:
+      # ServiceAccount를 지정하는 것이 imagePullSecrets 사용의 베스트 프랙티스
+      # 만약 특정 ServiceAccount를 사용한다면 여기에 지정
+      # serviceAccountName: {{ .Values.serviceAccount.name | default "default" }}
+
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -23,11 +27,12 @@ spec:
             - name: http
               containerPort: 5000
               protocol: TCP
-      imagePullSecrets:
-        - name: {{ .Values.imagePullSecret.name }}   
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          resources: 
+            {{- toYaml .Values.resources | nindent 12 }} # .Values.resources가 정의되어 있다면 이 부분은 그대로 사용
 
+      # imagePullSecrets는 Pod Spec 바로 아래에 위치
+      # .Values.imagePullSecrets가 정의되어 있다면 해당 Secret들을 사용
+      # 비어 있지 않은 경우에만 이 블록이 렌더링
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- range .Values.imagePullSecrets }}
