@@ -25,8 +25,9 @@ spec:
           protocol: TCP
         resources:
           {{- toYaml .Values.resources | nindent 10 }} # values.yaml에서 리소스 설정 가져옴
-      imagePullSecrets:
-      {{- range . }}
-        - name: {{ .name }}
+      {{- if .Values.imagePullSecrets }} # imagePullSecrets가 values.yaml에 정의되어 있을 때만 이 섹션을 포함
+      imagePullSecrets: # 이 라인은 'containers'와 같은 들여쓰기 레벨 (6칸)
+      {{- range .Values.imagePullSecrets }} # values.yaml의 imagePullSecrets 리스트를 순회
+        - name: {{ .name }} # 각 시크릿의 이름을 사용
       {{- end }}
-    {{- end }} # <<-- 이 라인에서 수정 끝
+      {{- end }} # {{- if .Values.imagePullSecrets }}
