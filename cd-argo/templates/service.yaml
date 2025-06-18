@@ -1,0 +1,16 @@
+# /home/jcg/devops_project/k8s-gitops-configs/cd-argo/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cd-argo.fullname" . }}-service # Helm 헬퍼 'cd-argo.fullname'을 사용해 서비스 이름 생성
+  labels:
+    {{- include "cd-argo.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }} # 서비스 타입
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http # 컨테이너 포트의 이름 (Deployment 템플릿에서 정의한 name: http와 일치)
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "cd-argo.selectorLabels" . | nindent 4 }}

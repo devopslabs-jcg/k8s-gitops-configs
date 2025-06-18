@@ -1,0 +1,8 @@
+apiVersion: v2
+name: cd-argo # 이 차트의 이름 (디렉토리 이름과 동일하게 cd-argo로 설정)
+description: A Helm chart for the metric-app application # 차트에 대한 설명
+
+type: application # 이 차트의 종류 (애플리케이션 배포용)
+
+version: 0.1.0 # 차트의 현재 버전
+appVersion: "latest" # 배포될 애플리케이션의 버전 (Docker 이미지 태그와 일치시킴)

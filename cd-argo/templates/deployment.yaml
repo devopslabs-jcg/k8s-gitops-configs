@@ -1,0 +1,30 @@
+# /home/jcg/devops_project/k8s-gitops-configs/cd-argo/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cd-argo.fullname" . }} # Helm 헬퍼 'cd-argo.fullname'을 사용해 배포 이름 생성
+  labels:
+    {{- include "cd-argo.labels" . | nindent 4 }} # 공통 레이블 정의
+spec:
+  replicas: {{ .Values.replicaCount }} # values.yaml에서 복제본 수 설정
+  selector:
+    matchLabels:
+      {{- include "cd-argo.selectorLabels" . | nindent 6 }} # 파드 선택자 레이블 정의
+  template:
+    metadata:
+      labels:
+        {{- include "cd-argo.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }} # 차트 이름으로 컨테이너 이름 설정
+        # values.yaml에서 이미지 경로 및 태그를 동적으로 가져옴
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: 5000 # Flask 애플리케이션의 포트 (컨테이너 내부 포트)
+          protocol: TCP
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }} # values.yaml에서 리소스 설정 가져옴
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets[0].name }} # GHCR 인증 시크릿 이름
