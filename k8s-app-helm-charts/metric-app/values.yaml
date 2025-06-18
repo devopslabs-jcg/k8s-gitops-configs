@@ -20,3 +20,7 @@ resources: {}
 imagePullSecret:
   enabled: true # 이미지 풀 시크릿 생성을 활성화하려면 true로 설정
   name: ghcr-pull-secret # 생성한 SealedSecret의 이름과 일치
+
+serviceAccount:
+  create: true # ServiceAccount를 Helm이 생성하게 할지 여부
+  name: default
