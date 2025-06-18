@@ -1,4 +1,3 @@
-# /home/jcg/devops_project/k8s-gitops-configs/cd-argo/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,4 +26,7 @@ spec:
         resources:
           {{- toYaml .Values.resources | nindent 10 }} # values.yaml에서 리소스 설정 가져옴
       imagePullSecrets:
-      - name: {{ .Values.imagePullSecrets[0].name }} # GHCR 인증 시크릿 이름
+      {{- range . }}
+        - name: {{ .name }}
+      {{- end }}
+      {{- end }} # <<-- 이 라인에서 수정 끝
