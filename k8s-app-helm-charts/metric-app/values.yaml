@@ -1,3 +1,5 @@
+namespace : metric-app-dev
+
 replicaCount: 1
 
 image:
@@ -13,3 +15,13 @@ service:
   port: 80
 
 resources: {}
+
+# === GHCR Image Pull Secret 관련 설정 ===
+# Sealed Secrets를 사용할 경우, 여기에 암호화된 .dockerconfigjson 값을 넣습니다.
+# 이 값은 'kubeseal' 명령어로 생성됩니다.
+imagePullSecret:
+  enabled: true # Secret 생성을 활성화/비활성화
+  name: ghcr-pull-secret # 생성될 Secret의 이름
+  # 여기에 실제 암호화된 .dockerconfigjson 문자열이 들어갑니다.
+  # 예시: eyJhdXRocyI6eyJnaGNyLmlvIjp7ImF1dGgiOiJ... (매우 긴 문자열)
+  sealedDockerConfigJson: "INSERT_YOUR_SEALED_DOCKER_CONFIG_JSON_HERE"
