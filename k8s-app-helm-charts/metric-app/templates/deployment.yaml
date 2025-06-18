@@ -1,33 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "metric-app.fullname" . }} # Helm 헬퍼 'metric-app.fullname'을 사용해 배포 이름 생성
+  name: {{ include "metric-app.fullname" . }}
   labels:
-    {{- include "metric-app.labels" . | nindent 4 }} # 공통 레이블 정의
+    {{- include "metric-app.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }} # values.yaml에서 복제본 수 설정
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "metric-app.selectorLabels" . | nindent 6 }} # 파드 선택자 레이블 정의
+      {{- include "metric-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         {{- include "metric-app.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-      - name: {{ .Chart.Name }} # 차트 이름으로 컨테이너 이름 설정
-        # values.yaml에서 이미지 경로 및 태그를 동적으로 가져옴
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        ports:
-        - name: http
-          containerPort: 5000 # Flask 애플리케이션의 포트 (컨테이너 내부 포트)
-          protocol: TCP
-        resources:
-          {{- toYaml .Values.resources | nindent 10 }} # values.yaml에서 리소스 설정 가져옴
-      {{- if .Values.imagePullSecrets }} # imagePullSecrets가 values.yaml에 정의되어 있을 때만 이 섹션을 포함
-      imagePullSecrets: # 이 라인은 'containers'와 같은 들여쓰기 레벨 (6칸)
-      {{- range .Values.imagePullSecrets }} # values.yaml의 imagePullSecrets 리스트를 순회
-        - name: {{ .name }} # 각 시크릿의 이름을 사용
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.imagePullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
       {{- end }}
-      {{- end }} # {{- if .Values.imagePullSecrets }}
