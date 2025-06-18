@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "metric-app.fullname" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "metric-app.labels" . | nindent 4 }}
 spec:
@@ -22,6 +23,8 @@ spec:
             - name: http
               containerPort: 5000
               protocol: TCP
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecret.name }}   
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
 
