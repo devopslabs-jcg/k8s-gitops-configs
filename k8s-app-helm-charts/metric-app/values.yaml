@@ -15,9 +15,7 @@ service:
 resources: {}
 
 imagePullSecrets:
-  enabled: true
-  secrets:
-    - name: ghcr-pull-secret
+  - name: ghcr-pull-secret
 
 serviceAccount:
   create: true

@@ -28,10 +28,8 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
 
-      {{- if and .Values.imagePullSecrets.enabled .Values.imagePullSecrets.secrets }}
+      {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
-        {{- range .Values.imagePullSecrets.secrets }}
-        - name: {{ .name }}
-        {{- end }}
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       {{- end }}
 
