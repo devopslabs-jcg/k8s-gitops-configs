@@ -3,7 +3,7 @@ replicaCount: 1
 namespace: metric-app-dev # Deployment가 배포될 네임스페이스
 
 image:
-  repository: ghcr.io/jangk34/metric-app # 실제 GHCR 이미지 경로
+  repository: ghcr.io/devopslabs-jcg/k8s-metric-app # 실제 GHCR 이미지 경로
   tag: latest # 실제 이미지 태그
   pullPolicy: IfNotPresent # 이미지 풀 정책
 
