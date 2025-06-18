@@ -1,5 +1,3 @@
-# k8s-app-helm-charts/metric-app/values.yaml
-
 replicaCount: 1
 
 namespace: metric-app-dev
@@ -14,13 +12,11 @@ service:
   port: 80
   targetPort: 5000
 
-# resources (컨테이너 리소스 요청/제한)
 resources: {}
 
-imagePullSecret:
-  enabled: true # 이미지 풀 시크릿 생성을 활성화하려면 true로 설정
-  name: ghcr-pull-secret # 생성한 SealedSecret의 이름과 일치
+imagePullSecrets:
+  - name: ghcr-pull-secret
 
 serviceAccount:
-  create: true # ServiceAccount를 Helm이 생성하게 할지 여부
+  create: true
   name: default
