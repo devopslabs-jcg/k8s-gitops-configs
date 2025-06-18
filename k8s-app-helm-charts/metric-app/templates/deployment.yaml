@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "cd-argo.fullname" . }} # Helm 헬퍼 'cd-argo.fullname'을 사용해 배포 이름 생성
+  name: {{ include "metric-app.fullname" . }} # Helm 헬퍼 'metric-app.fullname'을 사용해 배포 이름 생성
   labels:
-    {{- include "cd-argo.labels" . | nindent 4 }} # 공통 레이블 정의
+    {{- include "metric-app.labels" . | nindent 4 }} # 공통 레이블 정의
 spec:
   replicas: {{ .Values.replicaCount }} # values.yaml에서 복제본 수 설정
   selector:
     matchLabels:
-      {{- include "cd-argo.selectorLabels" . | nindent 6 }} # 파드 선택자 레이블 정의
+      {{- include "metric-app.selectorLabels" . | nindent 6 }} # 파드 선택자 레이블 정의
   template:
     metadata:
       labels:
-        {{- include "cd-argo.selectorLabels" . | nindent 8 }}
+        {{- include "metric-app.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - name: {{ .Chart.Name }} # 차트 이름으로 컨테이너 이름 설정

@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "cd-argo.name" -}}
+{{- define "metric-app.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If that's too long, we recommend you specify a value for .Values.fullnameOverride
 */}}
-{{- define "cd-argo.fullname" -}}
+{{- define "metric-app.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,9 +27,9 @@ If that's too long, we recommend you specify a value for .Values.fullnameOverrid
 {{/*
 Create chart name and version as part of the labels
 */}}
-{{- define "cd-argo.labels" -}}
-helm.sh/chart: {{ include "cd-argo.chart" . }}
-{{ include "cd-argo.selectorLabels" . }}
+{{- define "metric-app.labels" -}}
+helm.sh/chart: {{ include "metric-app.chart" . }}
+{{ include "metric-app.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -39,21 +39,21 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "cd-argo.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "cd-argo.name" . }}
+{{- define "metric-app.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "metric-app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Create the name of the chart.
 */}}
-{{- define "cd-argo.chart" -}}
+{{- define "metric-app.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "cd-argo.commonLabels" -}}
-{{ include "cd-argo.labels" . }}
+{{- define "metric-app.commonLabels" -}}
+{{ include "metric-app.labels" . }}
 {{- end -}}
