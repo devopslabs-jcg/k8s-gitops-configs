@@ -12,5 +12,6 @@ spec:
       targetPort: http # 컨테이너 포트의 이름 (Deployment 템플릿에서 정의한 name: http와 일치)
       protocol: TCP
       name: http
+      nodePort: {{ .Values.service.nodePort }}  
   selector:
     {{- include "metric-app.selectorLabels" . | nindent 4 }}
