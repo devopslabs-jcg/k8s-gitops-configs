@@ -16,6 +16,11 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+service:
+  type: ClusterIP # 또는 NodePort, LoadBalancer 등 원하는 서비스 타입으로 설정
+  port: 80 # 컨테이너 포트 (deployment.yaml의 containerPort와 일치시켜야 함)
+  targetPort: 5000 # 애플리케이션이 실제로 리스닝하는 포트 (deployment.yaml의 containerPort와 일치시켜야 함)
+
 # imagePullSecrets 정의 (여기에 ghcr-pull-secret 추가)
 # 이 리스트는 Deployment 템플릿의 {{- if .Values.imagePullSecrets }} 블록에 사용.
 imagePullSecrets:
