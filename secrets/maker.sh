@@ -7,4 +7,4 @@ kubectl create secret docker-registry ghcr-pull-secret \
 kubeseal --scope cluster-wide --format yaml \
   --controller-name sealed-secrets \
   --controller-namespace kube-system \
-  > ./ghcr-sealedsecret.yaml
+  > /home/jcg/devops_project/k8s-gitops-configs/secrets/ghcr-sealedsecret.yaml
