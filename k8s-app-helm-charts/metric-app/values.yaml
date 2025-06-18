@@ -17,6 +17,6 @@ resources: {}
   #   memory: 128Mi
 
 # imagePullSecrets 정의 (여기에 ghcr-pull-secret 추가)
-# 이 리스트는 Deployment 템플릿의 {{- if .Values.imagePullSecrets }} 블록에 사용
+# 이 리스트는 Deployment 템플릿의 {{- if .Values.imagePullSecrets }} 블록에 사용.
 imagePullSecrets:
   - name: ghcr-pull-secret #SealedSecret의 이름
