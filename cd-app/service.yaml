@@ -1,0 +1,15 @@
+# /home/jcg/devops_project/k8s-gitops-configs/cd-app/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: metric-app-service
+  labels:
+    app: metric-app
+spec:
+  selector:
+    app: metric-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: ClusterIP
