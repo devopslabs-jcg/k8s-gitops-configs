@@ -22,3 +22,4 @@ imagePullSecrets:
 serviceAccount:
   create: true
   name: default
+
