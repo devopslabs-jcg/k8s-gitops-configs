@@ -1,20 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monitoring-stack # <--- 새로운 애플리케이션 이름
-  namespace: argocd     # Argo CD가 설치된 네임스페이스
+  name: metric-app-helm # Argo CD UI에 표시될 애플리케이션 이름
+  namespace: argocd    # Argo CD가 설치된 네임스페이스
 spec:
   project: default
   source:
-    repoURL: https://github.com/devopslabs-jcg/k8s-platform-configs.git # <--- k8s-platform-configs 저장소 URL
-    targetRevision: HEAD # 또는 main
-    path: monitoring/prometheus-stack # k8s-platform-configs 내의 Helm Chart 경로
+    repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git
+    targetRevision: HEAD
+    path: k8s-app-helm-charts/metric-app # Helm Chart 경로
   destination:
     server: https://kubernetes.default.svc
-    namespace: monitoring # 모니터링 스택이 배포될 네임스페이스
+    namespace: metric-app-dev # 앱이 배포될 네임스페이스
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=true # 네임스페이스가 없으면 생성
+      # --- 아래 두 줄 중 하나를 추가합니다 (권장: DisableResourceHook=true) ---
+      - DisableResourceHook=true # Helm Hooks로 배포되는 리소스 (CRD 포함)를 무시
+      # - SkipCrds=true          # Helm 차트에 포함된 CRD 동기화를 건너뜁니다 (Helm 3.7+ 권장)
+      # --------------------------------------------------------------------
