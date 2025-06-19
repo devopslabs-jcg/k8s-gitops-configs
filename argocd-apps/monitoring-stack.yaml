@@ -1,24 +1,37 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metric-app-helm # Argo CD UI에 표시될 애플리케이션 이름
-  namespace: argocd    # Argo CD가 설치된 네임스페이스
+  name: monitoring-stack
+  namespace: argocd # Argo CD 애플리케이션 객체가 생성될 네임스페이스
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git
+    repoURL: https://github.com/devopslabs-jcg/k8s-platform-configs.git # <-- 실제 repoURL로 변경!
     targetRevision: HEAD
-    path: k8s-app-helm-charts/metric-app # Helm Chart 경로
+    path: monitoring/prometheus-stack # <-- 'k8s-platform-configs' 저장소의 'monitoring/prometheus-stack' 경로
+    helm:
+      skipCrds: true # CRD를 별도 앱으로 관리하므로 True로 설정
+      # 이곳에 Prometheus-stack 헬름 차트에 적용할 values 파일 경로 또는 직접 values 정의
+      # 예시: values: |
+      #   grafana:
+      #     service:
+      #       type: NodePort
+      #       nodePort: 30000
+      valueFiles:
+        - values.yaml # 만약 Git 저장소 내에 values.yaml이 있다면 이렇게 지정
+      # 또는 parameters:
+      #   - name: "grafana.service.type"
+      #     value: "NodePort"
   destination:
     server: https://kubernetes.default.svc
-    namespace: metric-app-dev # 앱이 배포될 네임스페이스
+    namespace: monitoring # Prometheus, Grafana 등이 배포될 실제 네임스페이스
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true # 네임스페이스가 없으면 생성
-      # --- 아래 두 줄 중 하나를 추가합니다 (권장: DisableResourceHook=true) ---
-      - DisableResourceHook=true # Helm Hooks로 배포되는 리소스 (CRD 포함)를 무시
-      # - SkipCrds=true          # Helm 차트에 포함된 CRD 동기화를 건너뜁니다 (Helm 3.7+ 권장)
-      # --------------------------------------------------------------------
+      - CreateNamespace=true # 'monitoring' 네임스페이스가 없다면 Argo CD가 자동으로 생성
+      - ServerSideApply=true # 충돌 방지를 위해 권장
+      - ApplyOutOfSyncOnly=true # out of sync일 때만 적용
