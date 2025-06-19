@@ -2,19 +2,19 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metric-app-helm # Argo CD UI에 표시될 애플리케이션 이름
-  namespace: argocd 
+  namespace: argocd   # Argo CD가 설치된 네임스페이스
 spec:
-  project: default 
+  project: default
   source:
-    repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git 
-    targetRevision: HEAD # 'main' 브랜치 또는 'HEAD' (최신 커밋)
-    path: kubernetes-app-charts/metric-app # <-- Helm 차트가 위치한 경로
+    repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git
+    targetRevision: HEAD
+    path: k8s-app-helm-charts/metric-app # Helm Chart 경로
   destination:
-    server: https://kubernetes.default.svc 
-    namespace: default # 어플리케이션 배포 네임스페이
-  syncPolicy:스
+    server: https://kubernetes.default.svc
+    namespace: metric-app-dev # 앱이 배포될 네임스페이스
+  syncPolicy:
     automated:
-      prune: true 
-      selfHeal: true # 클러스터 상태가 Git과 다르면 자동으로 동기화
+      prune: true
+      selfHeal: true
     syncOptions:
-      - CreateNamespace=true # 대상 네임스페이스가 없으면 자동으로 생성
+      - CreateNamespace=true # 네임스페이스가 없으면 생성
