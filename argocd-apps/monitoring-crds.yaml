@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-crds # CRD 전용 애플리케이션 이름
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git 
+    targetRevision: HEAD
+    path: k8s-gitops-configs/crds/prometheus-operator # CRD 파일들을 복사한 경로
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default # CRD는 클러스터 스코프 자원이지만, Argo CD Application 객체는 네임스페이스가 필요
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false # CRD는 네임스페이스를 생성하지 않음
+      - ServerSideApply=true # 충돌 방지를 위해 CRD에 권장
+      - ApplyOutOfSyncOnly=true # out of sync일 때만 적용
