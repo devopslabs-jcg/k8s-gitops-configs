@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git
     targetRevision: HEAD
-    path: crds/prometheus-operator # 'k8s-gitops-configs/' 부분을 제거합니다.
+    path: crds/prometheus-operator
   destination:
     server: https://kubernetes.default.svc
     namespace: default
