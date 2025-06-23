@@ -1,0 +1,24 @@
+# k8s-gitops-configs/argocd-apps/logging/elasticsearch-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elasticsearch # Argo CD UI에서 보여질 애플리케이션 이름
+  namespace: argocd   # Argo CD가 설치된 네임스페이스
+spec:
+  project: default    # Argo CD 프로젝트 (기본은 'default')
+  source:
+    repoURL: https://github.com/devopslabs-jcg/k8s-logging-configs.git  # k8s-logging-configs Git 리포지토리 URL (예: https://github.com/your-org/k8s-logging-configs.git)
+    targetRevision: HEAD # Git 브랜치 또는 태그 (예: main, v1.0.0)
+    path: helm-values    # k8s-logging-configs 리포토리 내의 Helm values 파일이 있는 경로
+    helm:
+      valueFiles: # 사용할 values 파일 목록 (필수)
+        - elasticsearch-values.yaml # k8s-logging-configs/helm-values/elasticsearch-values.yaml 파일을 참조
+  destination:
+    server: https://kubernetes.default.svc # 배포될 Kubernetes 클러스터 (인클러스터의 경우 고정)
+    namespace: logging # Elasticsearch가 배포될 네임스페이스 (이전에 만든 네임스페이스)
+  syncPolicy:
+    automated: # 자동 동기화 설정
+      prune: true # 클러스터에 없는 리소스 삭제
+      selfHeal: true # Git과 상태가 다를 경우 자동 복구
+    syncOptions:
+      - CreateNamespace=true # 만약 네임스페이스가 없다면 자동 생성 (이미 만들었으므로 다시 만들 필요는 없지만 안전장치)
