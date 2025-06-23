@@ -5,8 +5,7 @@ namespace: kubewatch-dev
 imagePullSecret:
   enabled: true
   name: ghcr-pull-secret
-  encryptedData:
-    .dockerconfigjson: {{ .Values.imagePullSecret.sealedDockerConfigJson }}
+  sealedDockerConfigJson: "AgCCBreWXDODq+1u7zVAYDdcggM7H2PgV/aRF1oph4iTy2vLPPmuoDwKfiCXfhSPNTVOOYJZDJfjohc8mpEJrsoL59r56BX8dxT2JxIbS10b9frUDxiikzKvCj32hI+0wAgg5LdkyYl06HhtNFx6ny8XnQlMtLL+NpFVUJWj3FvoXYPQAZKyzfYu66Agy0EXEbPSaCX4LD+vL37ewD7q8YUM2uA/jfXEhujIa4daXDlsVrYeQNJPDBSUEyospymsTjLs7PG6rrCsM5RrnyQihOOoiZIxz2iPEPzWn/iVLniuGn8N9PCFD5JfALVcNU0pJEnRc6CL6ud8lMY9ww9XeFM9Qc7CybvA70gHNh5j3wx7kAUdOSXqPcb/vcupYriQBhF48PB6L5Gvcv2HKUceFy9gA13fnlqTFqiQJJ0Zo/4JxepVkHMDtpQdqrIlO84Elq4YbOWwwEeoO2Hmo6HEfI461A2U5Ig9nRQSDTvCH17PTKVthUsq/Tun2ZaoNEcK4+cX9q2NGiHGZPgIiGfXganlCqWcNiex3sUdG2+jccXciiUQYIk+tx7MbMerL5TmFuvznYiM5YxLz7cwQ9oM7vL7mnweyv7IQ0032BkMRgcDP93omPb9wEkZ62ZDAIQ3yIxD7+M3K9sImx/PeOBrKuxgcyMoGt9i0M1CqC8cE9NirPjaV6X7JSJf58vvN3qqwF16a+7i8GEQfKm0UtsiWrde15VxRbbYo/6q+dxkRb+E+0p9IZ4yRJbNW22WjWWi8wxUBWlfpad6kZ+yu6Zk63pe3rz4JKZ2Biml1UYTUoIJzKn6b9XK1jFPohirwNjHzKYxHwFohC+P8TDO3Tv9Bzj4y8GRJhGSObYhGZhyozh75+Qu4LTBp2KohJXLWhKyiphabLtz/MrKIp3guaEgaymVJpuTvzyrN6KEke81" 
 
 # =================================================================
 # Backend (Flask + SocketIO) Settings
