@@ -1,7 +1,7 @@
 # =================================================================
 # Global Settings
 # =================================================================
-namespace: kubewatch-dev # KubeWatch를 배포할 네임스페이스
+namespace: kubewatch-dev
 imagePullSecret:
   enabled: true
   name: ghcr-pull-secret
