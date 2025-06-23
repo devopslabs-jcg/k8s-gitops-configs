@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-backend
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: kubewatch-backend
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      app: kubewatch-backend
+  template:
+    metadata:
+      labels:
+        app: kubewatch-backend
+    spec:
+      {{- if .Values.backend.serviceAccount.create }}
+      serviceAccountName: {{ .Values.backend.serviceAccount.name }}
+      {{- end }}
+      imagePullSecrets:
+        {{- if .Values.imagePullSecret.enabled }}
+        - name: {{ .Values.imagePullSecret.name }}
+        {{- end }}
+      containers:
+      - name: backend
+        image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+        imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.backend.service.targetPort }}
+        resources:
+          {{- toYaml .Values.backend.resources | nindent 12 }}
