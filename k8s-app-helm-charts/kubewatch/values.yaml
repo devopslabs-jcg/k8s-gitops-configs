@@ -13,7 +13,7 @@ imagePullSecret:
 backend:
   replicaCount: 1
   image:
-    repository: ghcr.io/devopslabs-jcg/kubewatch-backend # CI에서 빌드할 새 이미지 이름
+    repository: ghcr.io/devopslabs-jcg/k8s-metric-app/kubewatch-backend # CI에서 빌드할 새 이미지 이름
     tag: latest
     pullPolicy: IfNotPresent
 
@@ -34,7 +34,7 @@ backend:
 frontend:
   replicaCount: 1
   image:
-    repository: ghcr.io/devopslabs-jcg/kubewatch-frontend # CI에서 빌드할 새 이미지 이름
+    repository: ghcr.io/devopslabs-jcg/k8s-metric-app/kubewatch-frontend # CI에서 빌드할 새 이미지 이름
     tag: latest
     pullPolicy: IfNotPresent
 
