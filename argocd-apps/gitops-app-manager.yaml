@@ -5,7 +5,7 @@ metadata:
   name: gitops-app-manager
   namespace: argocd
 spec:
-  project: default
+  # [수정] 이 필드는 ApplicationSet의 최상위 spec에 존재할 수 없어 삭제합니다.
   
   # Generator: 어떤 규칙으로 하위 Application을 생성할지 정의합니다.
   generators:
@@ -26,6 +26,7 @@ spec:
       name: '{{path.basename}}'
       namespace: 'argocd'
     spec:
+      # [올바른 위치] 생성될 Application들이 속할 프로젝트는 여기에 정의합니다.
       project: "default"
       source:
         repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git
