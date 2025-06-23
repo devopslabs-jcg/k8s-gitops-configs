@@ -1,33 +1,36 @@
-# 디버깅을 위해 단 하나의 디렉토리('apps')만 스캔하도록 단순화한 ApplicationSet입니다.
+# App of Apps 패턴을 구현하는 최종 ApplicationSet 리소스입니다.
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: gitops-app-manager
   namespace: argocd
 spec:
-  # [수정됨] 이 필드는 ApplicationSet의 최상위 spec에 존재할 수 없어 삭제합니다.
+  project: default
   
+  # Generator: 어떤 규칙으로 하위 Application을 생성할지 정의합니다.
   generators:
   - git:
       repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git
       revision: main
-      # [디버깅 포인트] 다른 모든 디렉토리를 주석 처리하고, 'apps' 폴더 하나만 스캔합니다.
+      # [수정] 이제 모든 기능별 디렉토리를 스캔하도록 설정합니다.
       directories:
       - path: argocd-apps/apps
-      # - path: argocd-apps/core
-      # - path: argocd-apps/logging
-      # - path: argocd-apps/monitoring
+      - path: argocd-apps/core
+      - path: argocd-apps/logging
+      - path: argocd-apps/monitoring
       
+  # Template: 찾은 디렉토리들을 기반으로 Application을 어떻게 만들지 정의하는 '설계도'입니다.
   template:
     metadata:
+      # {{path.basename}}은 찾은 디렉토리 이름(apps, core 등)을 Application 이름으로 사용합니다.
       name: '{{path.basename}}'
       namespace: 'argocd'
     spec:
-      # [올바른 위치] 생성될 Application들이 속할 프로젝트는 여기에 정의합니다.
       project: "default"
       source:
         repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git
         targetRevision: main
+        # 각 Application은 해당 디렉토리 경로 하위의 모든 YAML을 관리하게 됩니다.
         path: '{{path}}'
         directory:
           recurse: true
