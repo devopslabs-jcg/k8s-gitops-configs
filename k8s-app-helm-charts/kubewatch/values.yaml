@@ -2,10 +2,10 @@
 # Global Settings
 # =================================================================
 namespace: kubewatch-dev # KubeWatch를 배포할 네임스페이스
-imagePullSecret:
+imagePullsecret:
   enabled: true
   name: ghcr-pull-secret
-  sealedDockerConfigJson: "AgBRx2kdcUn+pvgULLrHWFB5xw2k9Fe5EcF5jejUTE9f8Wp7xj1SOfcXB5CXclkWHkZtr3usjppIx2kxAYF4cN6da6aVgTYVAu4yduKFFApfJgHIxU/hGIxX+qjJSZxr+h+ogNBZfE6U/0zCNxyiVcfJKSJJYtMPvXFmipdJ7XB3KnNQNn4/HCr1YBYTLd7UuYV/LTuaWXhYGEA5IR/p2IuV4eVPoJMR0NsGARfipXTdvkmHgENcf5HBCgVlZDa1ag/ArqxhKWksc/miVO40M0xIV+zjVK6ZBl/qcbpfN71KfDBoVnb4nFowQg1Fzeva/Zk0/87CdOWBSPUp8Zt0qm7CrZvVF4mOFNa88IBrxySt29lRwqZBcNcwOgyvQhw89s1OszvCxHlv4gXFc28ramBOLdCv2QkbnxvKWriPy8nZ8NlDoySSbmlBSkOwCxNtQNyFhXkP51KNSbiGpajdgY+hc/NlTHM5ca/DPZUQjyMRHrt7Vt+28IGAm35zOajg1QpQGvMQuhGTXHYavQDNueWt+Koq20aOYeiQVyrlz2311l9fOy8TGYF2W/OX6ZiUG+kP3i3yK/7veqnQHCLjxMv9df7Y2arqrmHO8gayuNFYu9AUJWDerNnE4PvHKlkzRo77Odhj6x12PdgoCKpCItMPI2TTFZmuJMazXCAfIOQuWTEz4IMNzfMHnXO8tbS7C53xzDl8uZFPfoloMewVJ58jj0nrt2X3+QdTgXqdamY702AtuxgxGfNjD0nkCeA5UFqXCXwFsLsZ/dldzdpAw9MaYWDugQM5NG6+9zTQyFmEFaFxDUx8MNCTzqM7FgMBtW4u3qWg5NNg950yyny3xnS0v+TFiQyTZZAkoddU6L9x4PIKtMruXgRLiDhtr71s2hsM37P4ATm6xL0HMPtuzNjuW1NG+ofz6zNFHUStFpEJTXoe1h4=" # 기존 값 유지
+  sealedDockerConfigJson: "AgBRx2kdcUn+pvgULLrHWFB5xw2k9Fe5EcF5jejUTE9f8Wp7xj1SOfcXB5CXclkWHkZtr3usjppIx2kxAYF4cN6da6aVgTYVAu4yduKFFApfJgHIxU/hGIxX+qjJSZxr+h+ogNBZfE6U/0zCNxyiVcfJKSJJYtMPvXFmipdJ7XB3KnNQNn4/HCr1YBYTLd7UuYV/LTuaWXhYGEA5IR/p2IuV4eVPoJMR0NsGARfipXTdvkmHgENcf5HBCgVlZDa1ag/ArqxhKWksc/miVO40M0xIV+zjVK6ZBl/qcbpfN71KfDBoVnb4nFowQg1Fzeva/Zk0/87CdOWBSPUp8Zt0qm7CrZvVF4mOFNa88IBrxySt29lRwqZBcNcwOgyvQhw89s1OszvCxHlv4gXFc28ramBOLdCv2QkbnxvKWriPy8nZ8NlDoySSbmlBSkOwCxNtQNyFhXkP51KNSbiGpajdgY+hc/NlTHM5ca/DPZUQjyMRHrt7Vt+28IGAm35zOajg1QpQGvMQuhGTXHYavQDNueWt+Koq20aOYeiQVyrlz2311l9fOy8TGYF2W/OX6ZiUG+kP3i3yK/7veqnQHCLjxMv9df7Y2arqrmHO8gayuNFYu9AUJWDerNnE4PvHKlkzRo77Odhj6x12PdgoCKpCItMPI2TTFZmuJMazXCAfIOQuWTEz4IMNzfMHnXO8tbS7C53xzDl8uZFPfoloMewVJ58jj0nrt2X3+QdTgXqdamY702AtuxgxGfNjD0nkCeA5UFqXCXwFsLsZ/dldzdpAw9MaYWDugQM5NG6+9zTQyFmEFaFxDUx8MNCTzqM7FgMBtW4u3qWg5NNg950yyny3xnS0v+TFiQyTZZAkoddU6L9x4PIKtMruXgRLiDhtr71s2hsM37P4ATm6xL0HMPtuzNjuW1NG+ofz6zNFHUStFpEJTXoe1h4="
 
 # =================================================================
 # Backend (Flask + SocketIO) Settings
@@ -16,7 +16,7 @@ backend:
     repository: ghcr.io/devopslabs-jcg/kubewatch-backend # CI에서 빌드할 새 이미지 이름
     tag: latest
     pullPolicy: IfNotPresent
-  
+
   service:
     type: ClusterIP # 백엔드는 외부로 직접 노출할 필요 없으므로 ClusterIP 사용
     port: 5000
@@ -27,8 +27,6 @@ backend:
     name: kubewatch-sa # K8s API 접근 권한을 위한 서비스 어카운트
 
   resources: {}
-  #  cpu: 100m
-  #  memory: 128Mi
 
 # =================================================================
 # Frontend (React + Nginx) Settings
@@ -47,5 +45,3 @@ frontend:
     nodePort: 30160 # 요청하신 고정 포트
 
   resources: {}
-  #  cpu: 100m
-  #  memory: 128Mi
