@@ -1,0 +1,43 @@
+# 디버깅을 위해 단 하나의 디렉토리('apps')만 스캔하도록 단순화한 ApplicationSet입니다.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: gitops-app-manager
+  namespace: argocd
+spec:
+  # [수정됨] 이 필드는 ApplicationSet의 최상위 spec에 존재할 수 없어 삭제합니다.
+  
+  generators:
+  - git:
+      repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git
+      revision: main
+      # [디버깅 포인트] 다른 모든 디렉토리를 주석 처리하고, 'apps' 폴더 하나만 스캔합니다.
+      directories:
+      - path: argocd-apps/apps
+      # - path: argocd-apps/core
+      # - path: argocd-apps/logging
+      # - path: argocd-apps/monitoring
+      
+  template:
+    metadata:
+      name: '{{path.basename}}'
+      namespace: 'argocd'
+    spec:
+      # [올바른 위치] 생성될 Application들이 속할 프로젝트는 여기에 정의합니다.
+      project: "default"
+      source:
+        repoURL: https://github.com/devopslabs-jcg/k8s-gitops-configs.git
+        targetRevision: main
+        path: '{{path}}'
+        directory:
+          recurse: true
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 'default'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+
