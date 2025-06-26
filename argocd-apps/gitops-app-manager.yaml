@@ -18,7 +18,8 @@ spec:
       - path: argocd-apps/core
       - path: argocd-apps/logging
       - path: argocd-apps/monitoring
-      
+      - path: argocd-apps/platform
+
   # Template: 찾은 디렉토리들을 기반으로 Application을 어떻게 만들지 정의하는 '설계도'입니다.
   template:
     metadata:

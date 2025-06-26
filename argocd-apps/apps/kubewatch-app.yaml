@@ -8,7 +8,6 @@ spec:
   source:
     repoURL: 'https://github.com/devopslabs-jcg/k8s-gitops-configs.git'
     targetRevision: main
-    # [수정] 경로를 metric-app에서 kubewatch로 변경
     path: k8s-app-helm-charts/kubewatch 
   destination:
     server: 'https://kubernetes.default.svc'
