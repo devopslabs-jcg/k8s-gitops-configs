@@ -1,19 +1,19 @@
-# k8s-gitops-configs/argocd-apps/rook-ceph-app.yaml
+# k8s-gitops-configs/argocd-apps/platform/rook-ceph-app.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: rook-ceph
   namespace: argocd
+  labels:
+    app.kubernetes.io/component: platform-services
 spec:
   project: default
   source:
-    repoURL: https://charts.rook.io/release # Rook Chart 리포지토리
-    targetRevision: v1.17.5 # Chart 버전에 맞게 수정
-    chart: rook-ceph
-    helm:
-      # GitOps 저장소에 있는 커스텀 values 파일을 참조합니다.
-      valueFiles:
-      - https://github.com/devopslabs-jcg/k8s-infra-as-code/kubernetes-addons/rook-ceph/values.yaml # <-- 사용자 Git 레포 URL로 변경
+    # 1. repoURL을 사용자 Git 저장소로 변경
+    repoURL: https://github.com/devopslabs-jcg/k8s-infra-as-code.git
+    targetRevision: main
+    # 2. 'path'를 복사한 Chart 디렉토리 경로로 지정
+    path: kubernetes-addons/rook-ceph # <-- Chart.yaml이 있는 디렉토리
   destination:
     server: https://kubernetes.default.svc
     namespace: rook-ceph
