@@ -13,7 +13,7 @@ spec:
     helm:
       # GitOps 저장소에 있는 커스텀 values 파일을 참조합니다.
       valueFiles:
-      - https://github.com/devopslabs-jcg/k8s-infra-as-code/raw/main/kubernetes-addons/rook-ceph/values.yaml # <-- 사용자 Git 레포 URL로 변경
+      - https://github.com/devopslabs-jcg/k8s-infra-as-code/kubernetes-addons/rook-ceph/values.yaml # <-- 사용자 Git 레포 URL로 변경
   destination:
     server: https://kubernetes.default.svc
     namespace: rook-ceph
