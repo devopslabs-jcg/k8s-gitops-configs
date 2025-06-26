@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    # 1. repoURL을 사용자 Git 저장소로 변경
+    # 1. repoURL을 사용자 Git 저장소로 변경!
     repoURL: https://github.com/devopslabs-jcg/k8s-infra-as-code.git
     targetRevision: main
     # 2. 'path'를 복사한 Chart 디렉토리 경로로 지정
